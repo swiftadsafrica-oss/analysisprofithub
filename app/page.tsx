@@ -5,7 +5,7 @@ import { useDeriv } from "@/hooks/use-deriv"
 import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Moon, Sun, User, AlertTriangle, Menu, TrendingUp, Layers, Eye, Hash, Clock, Activity, LayoutDashboard, Sliders, LineChart, Sparkles, Cpu, Terminal, Radio, Flame, Percent, CheckSquare, XCircle, HelpCircle, BrainCircuit, ArrowUpDown } from 'lucide-react'
+import { Moon, Sun, User, AlertTriangle, Menu, TrendingUp, Layers, Eye, Hash, Clock, Activity, Sliders, LineChart, Sparkles, Cpu, Terminal, Radio, Flame, Percent, CheckSquare, XCircle, HelpCircle, BrainCircuit, ArrowUpDown } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,9 +40,9 @@ import { MoneyMakerTab } from "@/components/tabs/money-maker-tab"
 import type { Variants } from 'framer-motion';
 import { ToolsInfoTab } from "@/components/tabs/tools-info-tab"
 import SmartAdaptiveTradingTab from "@/components/tabs/smart-adaptive-trading"
-import { DashboardTab } from "@/components/tabs";
 import { RiskDisclaimerModal } from "@/components/modals/risk-disclaimer-modal"
 import { MarketSelector } from "@/components/market-selector"
+import TradingEngineTab from "@/components/tabs/trading-engine-tab"
 
 import { FloatingAIScanner } from "@/components/floating-ai-scanner"
 import { LiveChat } from "@/components/live-chat"
@@ -72,6 +72,7 @@ export default function DerivAnalysisApp() {
   const [initError, setInitError] = useState<string | null>(null)
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false)
   const [showRiskModal, setShowRiskModal] = useState(false)
+  const [showMarketSuggestion, setShowMarketSuggestion] = useState(true)
 
   const [siteConfig, setSiteConfig] = useState<any>(null)
   const [watchedDigits, setWatchedDigits] = useState<number[]>(() => {
@@ -337,63 +338,60 @@ export default function DerivAnalysisApp() {
                     }`}>
                     <div className="overflow-x-auto no-scrollbar flex">
                       <ResponsiveTabs theme={theme} value={activeTab} onValueChange={setActiveTab}>
-                        {[
-                          "dashboard",
-                          "smart-adaptive",
-                          "smart-analysis",
-                          "smartauto24",
-                          "autobot",
-                          "automated",
-                          "signals",
-                          "pro-signals",
-                          "super-signals",
-                          "advanced-signals",
-                          "even-odd",
-                          "over-under",
-                          "advanced-over-under",
-                          "matches",
-                          "differs",
-                          "ai-analysis",
-                          "tools-info",
-                        ].filter(tab => !siteConfig?.hiddenTabs?.includes(tab)).map((tab) => {
-                          const tabLabels: Record<string, string> = {
-                            "dashboard": "Dashboard",
-                            "smart-adaptive": "Smart Adaptive",
-                            "smart-analysis": "Smart Analysis",
-                            "smartauto24": "SmartAuto24",
-                            "autobot": "Auto Bot",
-                            "automated": "Automated",
-                            "signals": "Signals",
-                            "pro-signals": "Pro Signals",
-                            "super-signals": "Super Signals",
-                            "advanced-signals": "Advanced Signals",
-                            "even-odd": "Even/Odd",
-                            "over-under": "Over/Under",
-                            "advanced-over-under": "Advanced Over/Under",
-                            "matches": "Matches",
-                            "differs": "Differs",
-                            "ai-analysis": "AI Analysis",
-                            "tools-info": "Tools Info"
-                          }
-                          const tabIcons: Record<string, any> = {
-                            "dashboard": LayoutDashboard,
-                            "smart-adaptive": Sliders,
-                            "smart-analysis": LineChart,
-                            "smartauto24": Sparkles,
-                            "autobot": Cpu,
-                            "automated": Terminal,
-                            "signals": Radio,
-                            "pro-signals": TrendingUp,
-                            "super-signals": Flame,
-                            "advanced-signals": Activity,
-                            "even-odd": Hash,
-                            "over-under": ArrowUpDown,
-                            "advanced-over-under": Percent,
-                            "matches": CheckSquare,
-                            "differs": XCircle,
-                            "ai-analysis": BrainCircuit,
-                            "tools-info": HelpCircle
-                          }
+  {[
+  "trading-engine",
+  "smart-adaptive",
+  "smart-analysis",
+  "smartauto24",
+  "autobot",
+  "automated",
+  "signals",
+  "pro-signals",
+  "super-signals",
+  "money-maker",
+  "even-odd",
+  "matches",
+  "differs",
+  "ai-analysis",
+  "tools-info",
+  ].filter(tab => !siteConfig?.hiddenTabs?.includes(tab)).map((tab) => {
+  const tabLabels: Record<string, string> = {
+  "trading-engine": "Trading Engine",
+  "smart-adaptive": "Smart Adaptive",
+  "smart-analysis": "Smart Analysis",
+  "smartauto24": "SmartAuto24",
+  "autobot": "Auto Bot",
+  "automated": "Automated",
+  "signals": "Signals",
+  "pro-signals": "Pro Signals",
+  "super-signals": "Super Signals",
+  "money-maker": "Money Maker",
+  "even-odd": "Even/Odd",
+  "matches": "Matches",
+  "differs": "Differs",
+  "ai-analysis": "AI Analysis",
+  "tools-info": "Tools Info"
+  }
+  const tabIcons: Record<string, any> = {
+  "trading-engine": Cpu,
+  "smart-adaptive": Sliders,
+  "smart-analysis": LineChart,
+  "smartauto24": Sparkles,
+  "autobot": Cpu,
+  "automated": Terminal,
+  "signals": Radio,
+  "pro-signals": TrendingUp,
+  "super-signals": BrainCircuit,
+  "money-maker": Flame,
+  "even-odd": Percent,
+  "matches": CheckSquare,
+  "differs": Hash,
+  "ai-analysis": Sparkles,
+  "tools-info": HelpCircle,
+  "advanced-signals": Activity,
+  "over-under": ArrowUpDown,
+  "advanced-over-under": Percent
+  }
                           const IconComponent = tabIcons[tab]
                           return (
                           <TabsTrigger
@@ -556,11 +554,8 @@ export default function DerivAnalysisApp() {
                 <div className="absolute top-0 left-0 right-0 z-50 bg-yellow-500/20 backdrop-blur-md p-2 text-center text-xs font-bold text-yellow-500 border-b border-yellow-500/30 animate-pulse">
                   Reconnecting to Deriv API... Some data may be delayed.
                 </div>
-              )}
-              <TabsContent value="dashboard" className="mt-0">
-                <DashboardTab theme={theme} />
-              </TabsContent>
-
+                      )}
+                      
               <TabsContent value="smart-analysis" className="mt-0 space-y-2 sm:space-y-3 md:space-y-4">
                 <div
                   className={`rounded-lg sm:rounded-xl p-2 sm:p-3 border flex items-center justify-between ${theme === "dark" ? "bg-linear-to-br from-[#0f1629]/80 to-[#1a2235]/80 border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.2)]" : "bg-white border-gray-200 shadow-lg"}`}
@@ -597,12 +592,60 @@ export default function DerivAnalysisApp() {
                     <div
                       className={`rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-4 border ${theme === "dark" ? "bg-linear-to-br from-[#0f1629]/80 to-[#1a2235]/80 border-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.2)]" : "bg-white border-gray-200 shadow-lg"}`}
                     >
-                      <h3
-                        className={`text-sm sm:text-base md:text-lg font-bold mb-3 sm:mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-                      >
-                        Last Digits Line Chart
-                      </h3>
+                      <div className="flex items-center justify-between mb-3 sm:mb-4">
+                        <h3
+                          className={`text-sm sm:text-base md:text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                        >
+                          Last Digits Line Chart
+                        </h3>
+                        <Button
+                          onClick={() => setShowMarketSuggestion(!showMarketSuggestion)}
+                          size="sm"
+                          variant="outline"
+                          className={`text-xs font-bold ${showMarketSuggestion ? (theme === "dark" ? "bg-blue-500/20 border-blue-500/50" : "bg-blue-100 border-blue-300") : ""}`}
+                        >
+                          {showMarketSuggestion ? "Hide Suggestion" : "Show Suggestion"}
+                        </Button>
+                      </div>
                       <LastDigitsLineChart digits={recentDigits.slice(-10)} />
+                      
+                      {/* Market Suggestion Below Chart - Toggleable */}
+                      {showMarketSuggestion && (
+                        <div className={`mt-4 p-3 rounded-lg border animate-in fade-in duration-300 ${
+                          (() => {
+                            const last10 = recentDigits.slice(-10);
+                            const avgDigit = last10.length > 0 ? last10.reduce((a, b) => a + b) / last10.length : 4.5;
+                            const isUptrend = last10.length > 1 && last10[last10.length - 1] > last10[0];
+                            const isDowntrend = last10.length > 1 && last10[last10.length - 1] < last10[0];
+                            const isRanging = !isUptrend && !isDowntrend && last10.length > 2;
+                            
+                            return isUptrend ? "bg-green-500/10 border-green-500/30" : 
+                                   isDowntrend ? "bg-red-500/10 border-red-500/30" : 
+                                   "bg-yellow-500/10 border-yellow-500/30";
+                          })()
+                        }`}>
+                          <p className={`text-xs font-bold uppercase tracking-wide ${theme === "dark" ? "text-slate-300" : "text-slate-700"}`}>
+                            {(() => {
+                              const last10 = recentDigits.slice(-10);
+                              if (last10.length === 0) return "Awaiting data...";
+                              
+                              const avgDigit = last10.reduce((a, b) => a + b) / last10.length;
+                              const isUptrend = last10.length > 1 && last10[last10.length - 1] > last10[0];
+                              const isDowntrend = last10.length > 1 && last10[last10.length - 1] < last10[0];
+                              const isRanging = !isUptrend && !isDowntrend;
+                              
+                              if (isUptrend) {
+                                return "📈 UPWARD POWER - Strong momentum. Market showing strong bullish power. Ideal for OVER trades.";
+                              } else if (isDowntrend) {
+                                return "📉 REVERSE STRENGTH - Downside momentum detected. Market leaning bearish. Consider UNDER positions.";
+                              } else if (isRanging) {
+                                return "➡️ BALANCED MARKET - Price ranging between highs and lows. Best for counter-trend or mean-reversion plays.";
+                              }
+                              return "🔄 NEUTRAL ZONE - Awaiting directional confirmation.";
+                            })()}
+                          </p>
+                        </div>
+                      )}
                     </div>
 
                     <div
@@ -788,9 +831,13 @@ export default function DerivAnalysisApp() {
                 />
               </TabsContent>
 
-              <TabsContent value="smart-adaptive" className="mt-0">
-                {analysis && <SmartAdaptiveTradingTab signals={signals} analysis={analysis} symbol={symbol} theme={theme} currentPrice={currentPrice} currentDigit={currentDigit} tickCount={tickCount} />}
-              </TabsContent>
+  <TabsContent value="trading-engine" className="mt-0">
+  <TradingEngineTab theme={theme} />
+  </TabsContent>
+
+  <TabsContent value="smart-adaptive" className="mt-0">
+  {analysis && <SmartAdaptiveTradingTab signals={signals} analysis={analysis} symbol={symbol} theme={theme} currentPrice={currentPrice} currentDigit={currentDigit} tickCount={tickCount} />}
+  </TabsContent>
 
               <TabsContent value="tools-info" className="mt-0">
                 <ToolsInfoTab theme={theme} connectionLogs={connectionLogs} />
